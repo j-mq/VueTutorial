@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header />
     <!-- Components are embedded, props can be passed-->
     <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
     <!-- Directive v-bind: pass the data as props to the component-->
@@ -7,10 +8,12 @@
 </template>
 
 <script>
+import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
+
 export default {
   name: "app",
-  components: { Todos },
+  components: { Header, Todos },
   data() {
     return {
       todos: [
