@@ -13,38 +13,50 @@
 import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
 import AddTodo from "./components/AddTodo";
+import axios from "axios";
 
 export default {
   name: "app",
   components: { Header, Todos, AddTodo },
   data() {
     return {
-      todos: [
-        {
-          id: 1,
-          title: "Todo one",
-          completed: false,
-        },
-        {
-          id: 2,
-          title: "Todo two",
-          completed: false,
-        },
-        {
-          id: 3,
-          title: "Todo three",
-          completed: false,
-        },
-      ],
+      todos: [],
     };
   },
   methods: {
     deleteTodo(id) {
-      this.todos = this.todos.filter((todo) => todo.id !== id);
+      axios.delete(`https://jsonplaceholder.typicode.com/todos${id}`)
+        .then((this.todos = this.todos.filter((todo) => todo.id !== id)))
+        .catch((error) => console.log(error));
     },
     addTodo(newTodo) {
-      this.todos = [...this.todos, newTodo];
+      const { title, completed } = newTodo;
+
+      axios.post("https://jsonplaceholder.typicode.com/todos", {
+          title,
+          completed,
+        })
+        .then((res) => (this.todos = [...this.todos, res.data]))
+        .catch((error) => console.log(error));
+      //this.todos = [...this.todos, newTodo];
     },
+  },
+  created() {
+    //Fires off when the component loads
+    //With axios
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos?_limit=5")
+      .then((res) => (this.todos = res.data))
+      .catch((error) => console.log(error));
+
+    //Example with fetch API
+    // const url = "https://jsonplaceholder.typicode.com/todos?_limit=5";
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((res) => (this.todos = res))
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
   },
 };
 </script>
