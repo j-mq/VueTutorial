@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <Header />
+    <AddTodo v-on:add-todo="addTodo" />
+    <!-- v-on gets an emmitted event -->
     <!-- Components are embedded, props can be passed-->
     <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
     <!-- Directive v-bind: pass the data as props to the component-->
@@ -10,10 +12,11 @@
 <script>
 import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
+import AddTodo from "./components/AddTodo";
 
 export default {
   name: "app",
-  components: { Header, Todos },
+  components: { Header, Todos, AddTodo },
   data() {
     return {
       todos: [
@@ -25,7 +28,7 @@ export default {
         {
           id: 2,
           title: "Todo two",
-          completed: true,
+          completed: false,
         },
         {
           id: 3,
@@ -39,13 +42,16 @@ export default {
     deleteTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
     },
+    addTodo(newTodo) {
+      this.todos = [...this.todos, newTodo];
+    },
   },
 };
 </script>
 
-
 <style>
-/* Style is global */
+/* The global Styling*/
+/* SCSS would go here?*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -54,5 +60,18 @@ export default {
 body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  background: #555;
+  color: #fff;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #666;
 }
 </style>
